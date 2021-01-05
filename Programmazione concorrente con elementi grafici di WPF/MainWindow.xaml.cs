@@ -27,10 +27,17 @@ namespace Programmazione_concorrente_con_elementi_grafici_di_WPF
 
         Random r;
 
+        Thickness navicella1Partenza;
+        Thickness navicella2Partenza;
+        Thickness navicella3Partenza;
+
         public MainWindow()
         {
             InitializeComponent();
             r = new Random();
+            navicella1Partenza = imgNavicella1.Margin;
+            navicella2Partenza = imgNavicella2.Margin;
+            navicella3Partenza = imgNavicella3.Margin;
         }
 
         public void MetodoMovimento(Image img)
@@ -44,6 +51,7 @@ namespace Programmazione_concorrente_con_elementi_grafici_di_WPF
                     marginTop = (int)img.Margin.Top;
                     marginLeft = (int)imgNavicella1.Margin.Left;
                 }));
+
                 while (marginLeft < 700)
                 {
                     Thread.Sleep(TimeSpan.FromMilliseconds(r.Next(1, 751)));
@@ -53,43 +61,93 @@ namespace Programmazione_concorrente_con_elementi_grafici_di_WPF
                         img.Margin = new Thickness(marginLeft, marginTop, 0, 0);
                     }));
                 }
+
+                this.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if(img.Name.Contains("1"))
+                    {
+                        lstPodio.Items.Add("La morte nera (navicella 1)");
+                    }
+                    else if(img.Name.Contains("2"))
+                    {
+                        lstPodio.Items.Add("Millennium falcon (navicella 2)");
+                    }
+                    else if (img.Name.Contains("3"))
+                    {
+                        lstPodio.Items.Add("Enterprise (navicella 3)");
+                    }
+                    if (lstPodio.Items.Count == 3)
+                    {
+                        btnInizia.IsEnabled = true;
+                    }
+                }));
             }
             catch(Exception ex)
             {
-                MessageBox.Show("Errore: " + ex.Message, "Attenzione", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw ex;
             }
         }
 
         public void MuoviPrimaNavicella()
         {
-            MetodoMovimento(imgNavicella1);
+            try
+            {
+                MetodoMovimento(imgNavicella1);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public void MuoviSecondaNavicella()
         {
-            MetodoMovimento(imgNavicella2);
+            try
+            {
+                MetodoMovimento(imgNavicella2);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public void MuoviTerzaNavicella()
         {
-            MetodoMovimento(imgNavicella3);
+            try
+            {
+                MetodoMovimento(imgNavicella3);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private void btnInizia_Click(object sender, RoutedEventArgs e)
         {
-            btnInizia.IsEnabled = false;
+            try
+            {
+                btnInizia.IsEnabled = false;
 
-            imgNavicella1.Margin = new Thickness(imgNavicella1.Margin.Left, imgNavicella1.Margin.Top, imgNavicella1.Margin.Bottom, imgNavicella1.Margin.Right);
-            imgNavicella2.Margin = new Thickness(imgNavicella2.Margin.Left, imgNavicella2.Margin.Top, imgNavicella2.Margin.Bottom, imgNavicella2.Margin.Right);
-            imgNavicella3.Margin = new Thickness(imgNavicella3.Margin.Left, imgNavicella3.Margin.Top, imgNavicella3.Margin.Bottom, imgNavicella3.Margin.Right);
+                lstPodio.Items.Clear();
 
-            t1 = new Thread(new ThreadStart(MuoviPrimaNavicella));
-            t2 = new Thread(new ThreadStart(MuoviSecondaNavicella));
-            t3 = new Thread(new ThreadStart(MuoviTerzaNavicella));
+                imgNavicella1.Margin = navicella1Partenza;
+                imgNavicella2.Margin = navicella2Partenza;
+                imgNavicella3.Margin = navicella3Partenza;
 
-            t1.Start();
-            t2.Start();
-            t3.Start();
+                t1 = new Thread(new ThreadStart(MuoviPrimaNavicella));
+                t2 = new Thread(new ThreadStart(MuoviSecondaNavicella));
+                t3 = new Thread(new ThreadStart(MuoviTerzaNavicella));
+
+                t1.Start();
+                t2.Start();
+                t3.Start();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Errore: " + ex.Message, "Attenzione", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
