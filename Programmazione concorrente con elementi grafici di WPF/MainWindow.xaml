@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Programmazione_concorrente_con_elementi_grafici_di_WPF"
         mc:Ignorable="d"
-        Title="Gara interspaziale dal sole a pluto" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Gara interspaziale dal sole a pluto" Height="450" Width="1000" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Image x:Name="imgSfondo" HorizontalAlignment="Left" Height="411" VerticalAlignment="Top" Width="794" Source="spazio.png" Stretch="UniformToFill"/>
         <Image x:Name="imgNavicella1" HorizontalAlignment="Left" Height="74" Margin="0,19,0,0" VerticalAlignment="Top" Width="97" Source="navicella1.png"/>
         <Image x:Name="imgNavicella2" HorizontalAlignment="Left" Height="74" Margin="0,107,0,0" VerticalAlignment="Top" Width="97" Source="navicella2.png"/>
         <Image x:Name="imgNavicella3" HorizontalAlignment="Left" Height="74" Margin="0,324,0,0" VerticalAlignment="Top" Width="97" Source="navicella3.png"/>
+        <Button x:Name="btnInizia" Content="Inizia la gara interspaziale" HorizontalAlignment="Left" Margin="799,10,0,0" VerticalAlignment="Top" Width="176" Click="btnInizia_Click" Height="45" />
     </Grid>
 </Window>

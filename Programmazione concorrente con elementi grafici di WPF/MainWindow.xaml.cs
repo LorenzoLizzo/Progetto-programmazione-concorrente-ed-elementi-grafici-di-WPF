@@ -31,33 +31,32 @@ namespace Programmazione_concorrente_con_elementi_grafici_di_WPF
         {
             InitializeComponent();
             r = new Random();
-
-            t1 = new Thread(new ThreadStart(MuoviPrimaNavicella));
-            t2 = new Thread(new ThreadStart(MuoviSecondaNavicella));
-            t3 = new Thread(new ThreadStart(MuoviTerzaNavicella));
-
-            t1.Start();
-            t2.Start();
-            t3.Start();
         }
 
         public void MetodoMovimento(Image img)
         {
-            int marginTop = 0;
-            int marginLeft = 0;
-            img.Dispatcher.BeginInvoke(new Action(() =>
+            try
             {
-                marginTop = (int)img.Margin.Top;
-                marginLeft = (int)imgNavicella1.Margin.Left;
-            }));
-            while (marginLeft < 700)
-            {
-                Thread.Sleep(TimeSpan.FromMilliseconds(r.Next(1, 751)));
-                marginLeft += 50;
-                this.Dispatcher.BeginInvoke(new Action(() =>
+                int marginTop = 0;
+                int marginLeft = 0;
+                img.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    img.Margin = new Thickness(marginLeft, marginTop, 0, 0);
+                    marginTop = (int)img.Margin.Top;
+                    marginLeft = (int)imgNavicella1.Margin.Left;
                 }));
+                while (marginLeft < 700)
+                {
+                    Thread.Sleep(TimeSpan.FromMilliseconds(r.Next(1, 751)));
+                    marginLeft += 50;
+                    this.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        img.Margin = new Thickness(marginLeft, marginTop, 0, 0);
+                    }));
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Errore: " + ex.Message, "Attenzione", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -76,5 +75,21 @@ namespace Programmazione_concorrente_con_elementi_grafici_di_WPF
             MetodoMovimento(imgNavicella3);
         }
 
+        private void btnInizia_Click(object sender, RoutedEventArgs e)
+        {
+            btnInizia.IsEnabled = false;
+
+            imgNavicella1.Margin = new Thickness(imgNavicella1.Margin.Left, imgNavicella1.Margin.Top, imgNavicella1.Margin.Bottom, imgNavicella1.Margin.Right);
+            imgNavicella2.Margin = new Thickness(imgNavicella2.Margin.Left, imgNavicella2.Margin.Top, imgNavicella2.Margin.Bottom, imgNavicella2.Margin.Right);
+            imgNavicella3.Margin = new Thickness(imgNavicella3.Margin.Left, imgNavicella3.Margin.Top, imgNavicella3.Margin.Bottom, imgNavicella3.Margin.Right);
+
+            t1 = new Thread(new ThreadStart(MuoviPrimaNavicella));
+            t2 = new Thread(new ThreadStart(MuoviSecondaNavicella));
+            t3 = new Thread(new ThreadStart(MuoviTerzaNavicella));
+
+            t1.Start();
+            t2.Start();
+            t3.Start();
+        }
     }
 }
